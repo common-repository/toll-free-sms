@@ -1,0 +1,106 @@
+<?php session_start(); 
+
+?>
+<script language="javascript">
+$(document).ready(
+	function() {
+		$("#form1").accordion({icons:false, autoHeight:false});
+		$("#smsform").hide();
+	}
+);
+</script>
+<script language="javascript">
+$(document).ready(
+	function() {
+		$("#sendsms").submit(
+			function() {
+				$("#status").html('<img src="loading.gif">');
+				$.post("sms.php",$("#sendsms").serialize(),function(data) {
+					if(data == "Message sent !")
+					{
+						$("#status").css("color","green");
+						$("#status").html(data);
+					} else {
+						$("#status").css("color","red");
+						$("#status").html(data);
+				
+					}
+				});
+				return false;
+			}
+		);
+	}
+);
+</script>
+<script language="javascript" type="text/javascript">
+function limitText(limitField, limitCount, limitNum) {
+	if (limitField.value.length > limitNum) {
+		limitField.value = limitField.value.substring(0, limitNum);
+	} else {
+		limitCount.value = limitNum - limitField.value.length;
+	}
+}
+</script>
+<style type="text/css" media="all">
+body {
+	font-size:10px;
+}
+.text {
+	border: 1px solid #ff9900;
+}
+.lbl {
+	color: #333;
+	font-family: verdana;
+	font-size: 15px;
+}
+
+#form1 {
+	width:400px;
+	padding: 5px;
+}
+.title {
+	padding:5px;
+	font-size: 15px;
+}
+textarea { 
+	overflow: auto; 
+}
+
+</style>
+
+<div id="form1">
+	<h3 class="title">Send SMS For Free</h3>		
+	<div id="smsform">
+	<form action="" method="post" id="sendsms">
+		<table>
+		<tr>
+		<td class="lbl">Mobile No.:</td>
+		<td><input type="text" class="text" name="to" size="20"></td>
+		</tr>
+		<tr>
+		<td class="lbl">Message:</td>
+		<td rowspan="5"><font size="2"><textarea cols="30" class="text" rows="5" name="sms"  onKeyDown="limitText(this.form.sms,this.form.countdown,160);" 
+onKeyUp="limitText(this.form.sms,this.form.countdown,160);"></textarea></font></td>
+		</tr>
+		<tr></tr>
+		<tr></tr>
+		<tr></tr>
+		<tr></tr>
+		<tr>
+		<td></td>
+		<td><font size="1">(Maximum characters: 160)<br>
+You have <input readonly type="text" name="countdown" size="3" value="160"> characters left.</font></td>
+		</tr>
+		<tr>
+		<td></td>
+		<td><input type="submit" name="send" value="Send SMS"></td>
+		</tr>
+		<tr>
+		<td></td>
+		<td><span id="status"></span></td>
+		</tr>
+		</table>
+		</form>
+	</div>
+	
+</div>
